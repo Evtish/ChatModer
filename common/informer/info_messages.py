@@ -1,4 +1,4 @@
-from informer import _msg_not_found
+from common.informer import _msg_not_found
 
 
 def get_msg_not_found_info() -> str:

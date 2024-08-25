@@ -7,11 +7,9 @@ from aiogram.exceptions import TelegramBadRequest
 from aiogram.types import CallbackQuery, InputMediaPhoto, ChatPermissions
 
 import common
-
-from informer.info_messages import *
-
-from config.settings import MUTE_DURATION
-from config.media import SORRY_SHREK
+from common.config.settings import MUTE_DURATION
+from common.config.media import SORRY_SHREK
+from common.informer.info_messages import *
 
 router = Router(name=__name__)
 

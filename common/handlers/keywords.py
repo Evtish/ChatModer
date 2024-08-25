@@ -4,12 +4,12 @@ from aiogram.types import Message
 
 import pymorphy3
 
-from informer.info_messages import get_info_for_admins
+from common.informer.info_messages import get_info_for_admins
 
 import common
 
-from config.settings import KEY_PHRASES
-from config.media import HAMSTER_COMBAT, BAD_WORDS
+from common.config.settings import KEY_PHRASES
+from common.config.media import HAMSTER_COMBAT, BAD_WORDS
 
 router = Router(name=__name__)
 morph = pymorphy3.MorphAnalyzer()

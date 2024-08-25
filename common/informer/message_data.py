@@ -3,7 +3,7 @@ from typing import Callable
 
 from aiogram.utils import markdown
 
-from informer import _msg_not_found
+from common.informer import _msg_not_found
 from common import detected_message
 
 

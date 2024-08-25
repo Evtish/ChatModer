@@ -4,7 +4,7 @@ from aiogram.enums import ParseMode
 from aiogram.types import Message
 from aiogram.utils import keyboard
 
-from config.settings import BOT_TOKEN
+from common.config.settings import BOT_TOKEN
 
 bot = Bot(token=BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 
