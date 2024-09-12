@@ -4,14 +4,21 @@ from typing import Callable
 
 from aiogram import Router, F
 from aiogram.exceptions import TelegramBadRequest
-from aiogram.types import CallbackQuery, InputMediaPhoto, ChatPermissions
+from aiogram.types import CallbackQuery, InputMediaPhoto, ChatPermissions, Message
 
 import common
-from common.config.settings import MUTE_DURATION
+from common.config.settings import MUTE_DURATION, Callback
 from common.config.media import SORRY_SHREK
 from common.informer.info_messages import *
 
 router = Router(name=__name__)
+
+
+async def edit_text_or_caption(message: Message, new_text: str) -> None:
+    if message.text:
+        await message.edit_text(new_text)
+    elif message.caption:
+        await message.edit_caption(caption=new_text)
 
 
 async def user_restricting_troubleshoot(callback: CallbackQuery) -> None:
@@ -19,14 +26,14 @@ async def user_restricting_troubleshoot(callback: CallbackQuery) -> None:
     info_caption = ("This operation can't be done, probably this is because user is admin. Would you like to delete "
                     "message anyway?")
     ask_buttons = {
-        'Yes': 'delete_message',
-        'No': 'ignore_massage'
+        'Yes': Callback.DELETE_MESSAGE,
+        'No': Callback.IGNORE
     }
 
     await callback.message.edit_caption(caption=info_caption, reply_markup=common.create_inline_kb(ask_buttons))
-    if router.callback_query(F.data == 'delete_message'):
+    if router.callback_query(F.data == Callback.DELETE_MESSAGE):
         await delete_message(CallbackQuery())
-    elif router.callback_query(F.data == 'ignore_massage'):
+    elif router.callback_query(F.data == Callback.IGNORE):
         await ignore_message(CallbackQuery())
 
 
@@ -36,7 +43,7 @@ def log_message_action(info: str, use_troubleshooting: bool = False) -> Callable
         async def wrapper(callback: CallbackQuery) -> None:
             async def answer_callback(text: str) -> None:
                 await callback.answer()
-                await callback.message.edit_caption(caption=text)
+                await edit_text_or_caption(callback.message, text)
 
             try:
                 returned_func = await func(callback)

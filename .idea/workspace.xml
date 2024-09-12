@@ -4,23 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b7d84252-e6ed-41d6-ad44-7567fbfd3c7c" name="Changes" comment="Modules and packages added">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common.py" beforeDir="false" afterPath="$PROJECT_DIR$/common/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/common/config/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/media.py" beforeDir="false" afterPath="$PROJECT_DIR$/common/config/media.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/common/config/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handlers/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/common/handlers/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handlers/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/common/handlers/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handlers/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/common/handlers/base.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handlers/keywords.py" beforeDir="false" afterPath="$PROJECT_DIR$/common/handlers/keywords.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/informer/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/common/informer/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/informer/info_messages.py" beforeDir="false" afterPath="$PROJECT_DIR$/common/informer/info_messages.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/informer/message_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/common/informer/message_data.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+    <list default="true" id="b7d84252-e6ed-41d6-ad44-7567fbfd3c7c" name="Changes" comment="Common package added">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/common/config/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/handlers/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/common/handlers/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/handlers/keywords.py" beforeDir="false" afterPath="$PROJECT_DIR$/common/handlers/keywords.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,17 +57,17 @@
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Python.main.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "H:/Python_Projects/ChatModer/main.py",
-    "settings.editor.selected.configurable": "proofread"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;H:/Python_Projects/ChatModer/main.py&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;proofread&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="H:\Python_Projects\ChatModer\common" />
@@ -167,7 +155,23 @@
       <option name="project" value="LOCAL" />
       <updated>1724621097116</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Common package added">
+      <option name="closed" value="true" />
+      <created>1724624092867</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1724624092867</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Common package added">
+      <option name="closed" value="true" />
+      <created>1724624106594</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1724624106594</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -197,18 +201,7 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="basic functionality" />
     <MESSAGE value="Modules and packages added" />
-    <option name="LAST_COMMIT_MESSAGE" value="Modules and packages added" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint suspend="NONE" type="python-line">
-          <url>file://$PROJECT_DIR$/main.py</url>
-          <line>11</line>
-          <log-expression expression="f'from get_user_name: {detected_message}'" language="Python" />
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="Common package added" />
+    <option name="LAST_COMMIT_MESSAGE" value="Common package added" />
   </component>
 </project>

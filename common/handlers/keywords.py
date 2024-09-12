@@ -1,6 +1,7 @@
 from aiogram import Router
 from aiogram.exceptions import TelegramBadRequest
 from aiogram.types import Message
+from aiogram.enums import ContentType
 
 import pymorphy3
 
@@ -8,18 +9,25 @@ from common.informer.info_messages import get_info_for_admins
 
 import common
 
-from common.config.settings import KEY_PHRASES
+from common.config.settings import KEY_PHRASES, Callback
 from common.config.media import HAMSTER_COMBAT, BAD_WORDS
 
 router = Router(name=__name__)
 morph = pymorphy3.MorphAnalyzer()
 
 kb_action_buttons = {
-    'Ignore': 'ignore_massage',
-    'Delete message': 'delete_message',
-    'Mute user': 'mute_user',
-    'Ban user': 'ban_user'
+    'Ignore': Callback.IGNORE,
+    'Delete message': Callback.DELETE_MESSAGE,
+    'Mute user': Callback.MUTE_USER,
+    'Ban user': Callback.BAN_USER
 }
+
+
+def get_text_or_caption(message: Message) -> str:
+    if message.text:
+        return message.text
+    elif message.caption:
+        return message.caption
 
 
 def convert_to_normal_form(phrase: str) -> str:
@@ -33,7 +41,7 @@ def convert_to_normal_form(phrase: str) -> str:
 
 
 def detect_kw(message: Message) -> Message:
-    normal_form_key_phrase = convert_to_normal_form(message.text)
+    normal_form_key_phrase = convert_to_normal_form(get_text_or_caption(message))
     for kw_phrase in KEY_PHRASES:
         if kw_phrase in normal_form_key_phrase:
             return message
