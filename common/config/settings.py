@@ -40,9 +40,9 @@ KEY_PHRASES = (
 
 
 class Callback(Enum):
-    IGNORE_MESSAGE = 'ignore_massage',
-    DELETE_MESSAGE = 'delete_message',
-    MUTE_USER = 'mute_user',
-    BAN_USER = 'ban_user',
-    EDIT_TEXT = 'edit_text',
-    EDIT_CAPTION = 'edit_caption'
+    IGNORE_MESSAGE: str = 'ignore_massage',
+    DELETE_MESSAGE: str = 'delete_message',
+    MUTE_USER: str = 'mute_user',
+    BAN_USER: str = 'ban_user',
+    EDIT_TEXT: str = 'edit_text',
+    EDIT_CAPTION: str = 'edit_caption'

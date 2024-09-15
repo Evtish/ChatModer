@@ -4,11 +4,12 @@ import logging
 
 from aiogram import Dispatcher
 
-from common import bot, handlers
+from common import bot
+from common.handlers import main_router
 
 # cur_session = aiogram.client.session.aiohttp.AiohttpSession(proxy='http://proxy.server:3128')
 dispatcher = Dispatcher()
-dispatcher.include_router(handlers.main_router)
+dispatcher.include_router(main_router)
 
 
 async def main() -> None:

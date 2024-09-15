@@ -3,10 +3,10 @@ from aiogram.exceptions import TelegramBadRequest
 from aiogram.types import Message
 
 import common
-import common.handlers
-from common.config.settings import KEY_PHRASES, Callback
-from common.config.media import HAMSTER_COMBAT, BAD_WORDS
-from common.informer.get_info_messages import get_info_for_admins
+from .. import text_or_caption
+from ..config.settings import KEY_PHRASES, Callback
+from ..config.media import HAMSTER_COMBAT, BAD_WORDS
+from ..informer.get_info_messages import get_info_for_admins
 
 import pymorphy3
 
@@ -32,7 +32,8 @@ def convert_to_normal_form(phrase: str) -> str:
 
 
 def detect_kw(message: Message) -> Message:
-    normal_form_key_phrase = convert_to_normal_form(message.text)
+    text_or_caption.set_message(message)
+    normal_form_key_phrase = convert_to_normal_form(text_or_caption.get_text_or_caption())
     for kw_phrase in KEY_PHRASES:
         if kw_phrase in normal_form_key_phrase:
             return message
@@ -46,7 +47,7 @@ async def info_admins(message: Message) -> None:
                     cur_admin.user.id,
                     HAMSTER_COMBAT,
                     caption=get_info_for_admins(),
-                    reply_markup=common.handlers.create_inline_kb(kb_action_buttons)
+                    reply_markup=common.create_inline_kb(kb_action_buttons)
                 )
     except (AttributeError, TelegramBadRequest):
         pass
@@ -56,7 +57,7 @@ async def info_admins(message: Message) -> None:
 async def handle_kw(message: Message) -> None:
     # global detected_message, answering_photo_message
     common.detected_message = detect_kw(message)
-    common.answering_photo_message = await common.detected_message.reply_photo(BAD_WORDS, disable_notification=True)
+    common.answering_message = await common.detected_message.reply_photo(BAD_WORDS, disable_notification=True)
     await info_admins(message)
 
     '''
