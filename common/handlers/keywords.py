@@ -2,23 +2,22 @@ from aiogram import Router
 from aiogram.exceptions import TelegramBadRequest
 from aiogram.types import Message
 
-import pymorphy3
-
-from common.informer.info_messages import get_info_for_admins
-
 import common
-
-from common.config.settings import KEY_PHRASES
+import common.handlers
+from common.config.settings import KEY_PHRASES, Callback
 from common.config.media import HAMSTER_COMBAT, BAD_WORDS
+from common.informer.get_info_messages import get_info_for_admins
+
+import pymorphy3
 
 router = Router(name=__name__)
 morph = pymorphy3.MorphAnalyzer()
 
 kb_action_buttons = {
-    'Ignore': 'ignore_massage',
-    'Delete message': 'delete_message',
-    'Mute user': 'mute_user',
-    'Ban user': 'ban_user'
+    'Ignore': Callback.IGNORE_MESSAGE,
+    'Delete message': Callback.DELETE_MESSAGE,
+    'Mute user': Callback.MUTE_USER,
+    'Ban user': Callback.BAN_USER
 }
 
 
@@ -47,7 +46,7 @@ async def info_admins(message: Message) -> None:
                     cur_admin.user.id,
                     HAMSTER_COMBAT,
                     caption=get_info_for_admins(),
-                    reply_markup=common.create_inline_kb(kb_action_buttons)
+                    reply_markup=common.handlers.create_inline_kb(kb_action_buttons)
                 )
     except (AttributeError, TelegramBadRequest):
         pass

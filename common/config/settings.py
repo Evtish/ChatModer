@@ -1,3 +1,4 @@
+from enum import Enum
 from os import getenv
 from datetime import timedelta
 
@@ -36,3 +37,12 @@ KEY_PHRASES = (
     'крипта',
     'криптовалюта'
 )
+
+
+class Callback(Enum):
+    IGNORE_MESSAGE = 'ignore_massage',
+    DELETE_MESSAGE = 'delete_message',
+    MUTE_USER = 'mute_user',
+    BAN_USER = 'ban_user',
+    EDIT_TEXT = 'edit_text',
+    EDIT_CAPTION = 'edit_caption'

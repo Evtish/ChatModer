@@ -7,9 +7,10 @@ from aiogram.exceptions import TelegramBadRequest
 from aiogram.types import CallbackQuery, InputMediaPhoto, ChatPermissions
 
 import common
-from common.config.settings import MUTE_DURATION
+import common.handlers
+from common.config.settings import MUTE_DURATION, Callback
 from common.config.media import SORRY_SHREK
-from common.informer.info_messages import *
+from common.informer.get_info_messages import *
 
 router = Router(name=__name__)
 
@@ -19,14 +20,14 @@ async def user_restricting_troubleshoot(callback: CallbackQuery) -> None:
     info_caption = ("This operation can't be done, probably this is because user is admin. Would you like to delete "
                     "message anyway?")
     ask_buttons = {
-        'Yes': 'delete_message',
-        'No': 'ignore_massage'
+        'Yes': Callback.DELETE_MESSAGE,
+        'No': Callback.IGNORE_MESSAGE
     }
 
-    await callback.message.edit_caption(caption=info_caption, reply_markup=common.create_inline_kb(ask_buttons))
-    if router.callback_query(F.data == 'delete_message'):
+    await callback.message.edit_caption(caption=info_caption, reply_markup=common.handlers.create_inline_kb(ask_buttons))
+    if router.callback_query(F.data == Callback.DELETE_MESSAGE):
         await delete_message(CallbackQuery())
-    elif router.callback_query(F.data == 'ignore_massage'):
+    elif router.callback_query(F.data == Callback.IGNORE_MESSAGE):
         await ignore_message(CallbackQuery())
 
 

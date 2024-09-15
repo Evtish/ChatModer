@@ -2,7 +2,6 @@ from aiogram import Bot
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.types import Message
-from aiogram.utils import keyboard
 
 from common.config.settings import BOT_TOKEN
 
@@ -10,10 +9,3 @@ bot = Bot(token=BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTM
 
 detected_message: Message = None
 answering_photo_message: Message = None
-
-
-def create_inline_kb(buttons: dict) -> keyboard.InlineKeyboardMarkup:
-    inline_kb_builder = keyboard.InlineKeyboardBuilder()
-    for btn_text, btn_callback in buttons.items():
-        inline_kb_builder.button(text=btn_text, callback_data=btn_callback)
-    return inline_kb_builder.adjust(1).as_markup()

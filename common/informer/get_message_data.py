@@ -3,14 +3,14 @@ from typing import Callable
 
 from aiogram.utils import markdown
 
-from common.informer import _msg_not_found
+from common.informer import _MSG_NOT_FOUND
 from common import detected_message
 
 
 def use_safely(func: Callable) -> Callable:
     @wraps(func)
     def wrapper(*args, **kwargs) -> str:
-        result = _msg_not_found
+        result = _MSG_NOT_FOUND
         try:
             result = func(*args, **kwargs)
         except AttributeError:
