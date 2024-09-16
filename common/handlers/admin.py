@@ -18,7 +18,7 @@ router = Router(name=__name__)
 async def user_restricting_troubleshoot(callback: CallbackQuery) -> None:
     # temp_callback: CallbackQuery
     info_text = ("This operation can't be done, probably this is because user is admin. Would you like to delete "
-                    "message anyway?")
+                 "message anyway?")
     ask_buttons = {
         'Yes': Callback.DELETE_MESSAGE,
         'No': Callback.IGNORE_MESSAGE
@@ -27,9 +27,9 @@ async def user_restricting_troubleshoot(callback: CallbackQuery) -> None:
     text_or_caption.set_message(callback.message)
     await text_or_caption.edit_text_or_caption(info_text, new_markup=create_inline_kb(ask_buttons))
     if router.callback_query(F.data == Callback.DELETE_MESSAGE):
-        await delete_message(callback)
+        await delete_message(CallbackQuery())
     elif router.callback_query(F.data == Callback.IGNORE_MESSAGE):
-        await ignore_message(callback)
+        await ignore_message(CallbackQuery())
 
 
 def log_message_action(info: str, use_troubleshooting: bool = False) -> Callable:

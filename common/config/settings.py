@@ -39,7 +39,7 @@ KEY_PHRASES = (
 )
 
 
-class Callback(Enum):
+class Callback(str, Enum):
     IGNORE_MESSAGE: str = 'ignore_massage',
     DELETE_MESSAGE: str = 'delete_message',
     MUTE_USER: str = 'mute_user',

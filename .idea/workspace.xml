@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b7d84252-e6ed-41d6-ad44-7567fbfd3c7c" name="Changes" comment="Common package added">
+    <list default="true" id="b7d84252-e6ed-41d6-ad44-7567fbfd3c7c" name="Changes" comment="Intermediate commit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/common/config/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common/handlers/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/common/handlers/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/handlers/keywords.py" beforeDir="false" afterPath="$PROJECT_DIR$/common/handlers/keywords.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,7 +63,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;H:/Python_Projects/ChatModer/main.py&quot;,
+    &quot;last_opened_file_path&quot;: &quot;H:/Python_Projects/ChatModer&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;proofread&quot;
   }
 }</component>
@@ -171,7 +170,15 @@
       <option name="project" value="LOCAL" />
       <updated>1724624106594</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Intermediate commit">
+      <option name="closed" value="true" />
+      <created>1726172584246</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1726172584246</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -202,6 +209,7 @@
     <MESSAGE value="basic functionality" />
     <MESSAGE value="Modules and packages added" />
     <MESSAGE value="Common package added" />
-    <option name="LAST_COMMIT_MESSAGE" value="Common package added" />
+    <MESSAGE value="Intermediate commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="Intermediate commit" />
   </component>
 </project>
