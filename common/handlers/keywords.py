@@ -1,33 +1,24 @@
 from aiogram import Router
 from aiogram.exceptions import TelegramBadRequest
 from aiogram.types import Message
-from aiogram.enums import ContentType
-
-import pymorphy3
-
-from common.informer.info_messages import get_info_for_admins
 
 import common
+from .. import text_or_caption
+from ..config.settings import KEY_PHRASES, Callback
+from ..config.media import HAMSTER_COMBAT, BAD_WORDS
+from ..informer.get_info_messages import get_info_for_admins
 
-from common.config.settings import KEY_PHRASES, Callback
-from common.config.media import HAMSTER_COMBAT, BAD_WORDS
+import pymorphy3
 
 router = Router(name=__name__)
 morph = pymorphy3.MorphAnalyzer()
 
 kb_action_buttons = {
-    'Ignore': Callback.IGNORE,
+    'Ignore': Callback.IGNORE_MESSAGE,
     'Delete message': Callback.DELETE_MESSAGE,
     'Mute user': Callback.MUTE_USER,
     'Ban user': Callback.BAN_USER
 }
-
-
-def get_text_or_caption(message: Message) -> str:
-    if message.text:
-        return message.text
-    elif message.caption:
-        return message.caption
 
 
 def convert_to_normal_form(phrase: str) -> str:
@@ -41,7 +32,8 @@ def convert_to_normal_form(phrase: str) -> str:
 
 
 def detect_kw(message: Message) -> Message:
-    normal_form_key_phrase = convert_to_normal_form(get_text_or_caption(message))
+    text_or_caption.set_message(message)
+    normal_form_key_phrase = convert_to_normal_form(text_or_caption.get_text_or_caption())
     for kw_phrase in KEY_PHRASES:
         if kw_phrase in normal_form_key_phrase:
             return message
@@ -65,7 +57,7 @@ async def info_admins(message: Message) -> None:
 async def handle_kw(message: Message) -> None:
     # global detected_message, answering_photo_message
     common.detected_message = detect_kw(message)
-    common.answering_photo_message = await common.detected_message.reply_photo(BAD_WORDS, disable_notification=True)
+    common.answering_message = await common.detected_message.reply_photo(BAD_WORDS, disable_notification=True)
     await info_admins(message)
 
     '''

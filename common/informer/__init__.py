@@ -1,1 +1,1 @@
-_msg_not_found = "Message isn't found"
+_MSG_NOT_FOUND = "Message isn't found"

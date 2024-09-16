@@ -1,8 +1,8 @@
-from common.informer import _msg_not_found
+from common.informer import _MSG_NOT_FOUND
 
 
 def get_msg_not_found_info() -> str:
-    return _msg_not_found
+    return _MSG_NOT_FOUND
 
 
 def get_ignore_msg_info() -> str:
