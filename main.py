@@ -5,7 +5,9 @@ import logging
 from aiogram import Dispatcher
 
 from common import bot
-from common.handlers import main_router
+from common.handler import main_router
+
+from common.handler.database_handlers import db_connection
 
 # cur_session = aiogram.client.session.aiohttp.AiohttpSession(proxy='http://proxy.server:3128')
 dispatcher = Dispatcher()
@@ -21,4 +23,5 @@ if __name__ == "__main__":
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
+        db_connection.close()
         print('Bot was stopped')

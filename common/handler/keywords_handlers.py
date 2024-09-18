@@ -1,4 +1,4 @@
-from aiogram import Router
+from aiogram import Router, F
 from aiogram.exceptions import TelegramBadRequest
 from aiogram.types import Message
 
@@ -56,9 +56,11 @@ async def info_admins(message: Message) -> None:
 @router.message()
 async def handle_kw(message: Message) -> None:
     # global detected_message, answering_photo_message
-    common.detected_message = detect_kw(message)
-    common.answering_message = await common.detected_message.reply_photo(BAD_WORDS, disable_notification=True)
-    await info_admins(message)
+    cur_detected_message = detect_kw(message)
+    if cur_detected_message:
+        common.detected_message = detect_kw(message)
+        common.answering_message = await common.detected_message.reply_photo(BAD_WORDS, disable_notification=True)
+        await info_admins(message)
 
     '''
     for kw_phrase in KEY_PHRASES:
