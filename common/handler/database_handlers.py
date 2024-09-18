@@ -8,7 +8,7 @@ from common.config.settings import KEY_PHRASES
 
 router = Router(name=__name__)
 
-db_connection = sqlite3.connect('key_phrases.db')
+db_connection = sqlite3.connect('main_database.db')
 db_cursor = db_connection.cursor()
 
 
@@ -19,19 +19,19 @@ def get_chat_name_safety(name: str) -> str:
 @router.message(F.new_chat_member)
 async def new_member(message: Message) -> None:
     if bot.id in map(lambda user: user.id, message.new_chat_members):
-        await message.answer('skibidi51')
-
         table_name = get_chat_name_safety(message.chat.full_name)
-        table_creation_query = f'''CREATE TABLE IF NOT EXISTS {table_name} (
-                        chat_data TEXT,
-                        kw_list TEXT,
-                        admin_list TEXT
-                    )'''
-        db_cursor.execute(table_creation_query)
+        db_cursor.execute('''CREATE TABLE IF NOT EXISTS key_phrases (
+                                chat_id INTEGER,
+                                chat_fullname TEXT,
+                                admin_list TEXT,
+                                kw_list TEXT
+                            )''')
         db_connection.commit()
 
-        data_inserting_query = f'INSERT INTO {table_name} (chat_data) VALUES (?)'
-        db_cursor.execute(data_inserting_query, ('repr(message.chat)',))
+        db_cursor.execute('INSERT INTO key_phrases (chat_id, chat_fullname) VALUES (?, ?)', (
+                            message.chat.id,
+                            get_chat_name_safety(message.chat.full_name))
+                          )
 
 # def get_common_chats(user_id: int | str) -> list[Chat]:
 #     chats = db_cursor.execute('SELECT ')
