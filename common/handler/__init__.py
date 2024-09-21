@@ -1,6 +1,6 @@
 from aiogram import Router
 
-from .base_handlers import router as base_router
+from .basic_handlers import router as base_router
 from .admin_handlers import router as admin_router
 from .database_handlers import router as database_router
 from .keywords_handlers import router as keywords_router

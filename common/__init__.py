@@ -22,6 +22,9 @@ def create_inline_kb(buttons: dict) -> keyboard.InlineKeyboardMarkup:
 class TextOrCaption:
     message: Message
 
+    def __init__(self):
+        pass
+
     def set_message(self, message: Message) -> None:
         self.message = message
 
