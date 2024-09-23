@@ -2,6 +2,8 @@ from enum import Enum
 from os import getenv
 from datetime import timedelta
 
+from aiogram.fsm.state import StatesGroup, State
+
 BOT_TOKEN = getenv('BOT_TOKEN')
 
 MUTE_DURATION = timedelta(seconds=31)
@@ -46,3 +48,7 @@ class Callback(str, Enum):
     BAN_USER: str = 'ban_user',
     EDIT_TEXT: str = 'edit_text',
     EDIT_CAPTION: str = 'edit_caption'
+
+
+class KeyPhrasesStates(StatesGroup):
+    WAIT_FOR_KEY_PHRASES = State()
