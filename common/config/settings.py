@@ -1,3 +1,4 @@
+import string
 from enum import Enum
 from os import getenv
 from datetime import timedelta
@@ -5,10 +6,9 @@ from datetime import timedelta
 from aiogram.fsm.state import StatesGroup, State
 
 BOT_TOKEN = getenv('BOT_TOKEN')
-
 DB_NAME = 'main_database.db'
-
 MUTE_DURATION = timedelta(seconds=31)
+CORRECT_SYMBOLS = string.printable + ''.join(map(lambda c: chr(c), range(ord('А'), ord('я')))) + 'ёЁ'
 
 KEY_PHRASES = (
     'пассивный заработок',

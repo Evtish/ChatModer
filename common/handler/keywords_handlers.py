@@ -4,9 +4,10 @@ from aiogram.types import Message
 
 import common
 from .. import text_or_caption
-from ..config.settings import KEY_PHRASES, Callback
+from ..config.settings import Callback, DB_NAME
 from ..config.media import HAMSTER_COMBAT, BAD_WORDS
 from ..informer.get_info_messages import get_info_for_admins
+from common.key_phrases_db import KeyPhrasesDB
 
 import pymorphy3
 
@@ -31,10 +32,13 @@ def convert_to_normal_form(phrase: str) -> str:
     return ' '.join(normal_form_phrase)
 
 
-def detect_kw(message: Message) -> Message:
+async def detect_kw(message: Message) -> Message:
+    async with KeyPhrasesDB(DB_NAME) as db:
+        key_phrases = await db.key_phrases_get(message.chat.id)
+
     text_or_caption.set_message(message)
     normal_form_key_phrase = convert_to_normal_form(text_or_caption.get_text_or_caption())
-    for kw_phrase in KEY_PHRASES:
+    for kw_phrase in key_phrases:
         if kw_phrase in normal_form_key_phrase:
             return message
 
@@ -56,9 +60,9 @@ async def info_admins(message: Message) -> None:
 @router.message()
 async def handle_kw(message: Message) -> None:
     # global detected_message, answering_photo_message
-    cur_detected_message = detect_kw(message)
+    cur_detected_message = await detect_kw(message)
     if cur_detected_message:
-        common.detected_message = detect_kw(message)
+        common.detected_message = cur_detected_message
         common.answering_message = await common.detected_message.reply_photo(BAD_WORDS, disable_notification=True)
         await info_admins(message)
 

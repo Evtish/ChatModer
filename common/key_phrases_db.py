@@ -1,14 +1,14 @@
+from common.config.settings import CORRECT_SYMBOLS
+
 from pathlib import Path
 from typing import Self
 
-import string
 import asyncio
-
 import aiosqlite
 
 
-def get_safe_chat_name(name: str) -> str:
-    return ''.join(s for s in name if s in string.printable)
+def get_safe_text(name: str) -> str:
+    return ''.join(s for s in name if s in CORRECT_SYMBOLS)
 
 
 class KeyPhrasesDB:
@@ -25,29 +25,164 @@ class KeyPhrasesDB:
         await self.db_cursor.close()
         await self.database.close()
 
-    async def add_chat_id(self, chat_id: int) -> None:
+    async def chat_add(self, chat_id: int, chat_fullname: str) -> None:
+        async with self.lock:
+            await self.db_cursor.execute('''
+                CREATE TABLE IF NOT EXISTS chats (
+                    chat_id INTEGER,
+                    chat_fullname TEXT
+                )
+            ''')
+
+            safe_chat_fullname = get_safe_text(chat_fullname)
+            await self.db_cursor.execute('INSERT OR REPLACE INTO chats (chat_id, safe_chat_fullname) VALUES (?, ?)', (
+                chat_id,
+                safe_chat_fullname
+            ))
+            await self.database.commit()
+
+    # async def add_chat_fullname(self, chat_id: int, chat_fullname: str) -> None:
+    #     safe_chat_fullname = get_safe_text(chat_fullname)
+    #     async with self.lock:
+    #         await self.db_cursor.execute(
+    #             'UPDATE chats SET (chat_fullname) = (?) WHERE chat_id = (?)',
+    #             (safe_chat_fullname, chat_id)
+    #         )
+    #         await self.database.commit()
+
+    async def chat_remove(self, chat_id: int) -> None:
+        async with self.lock:
+            await self.db_cursor.execute('DELETE FROM chats WHERE chat_id = (?)', (chat_id,))
+            await self.database.commit()
+
+    async def admin_add(
+            self,
+            chat_id: int,
+            admin_id: int,
+            admin_username: str,
+            admin_fullname: str,
+            can_delete_msg: bool,
+            can_restrict_user: bool
+    ) -> None:
+        async with self.lock:
+            await self.db_cursor.execute('''
+                CREATE TABLE IF NOT EXISTS admins (
+                    chat_id INTEGER,
+                    admin_id INTEGER,
+                    admin_username TEXT,
+                    admin_fullname TEXT,
+                    can_delete_msg INTEGER,
+                    can_restrict_user INTEGER
+                )
+            ''')
+
+            await self.db_cursor.execute('''
+                INSERT OR REPLACE INTO admins (
+                    chat_id,
+                    admin_id,
+                    admin_username,
+                    admin_fullname,
+                    can_delete_msg,
+                    can_restrict_user
+                ) VALUES (?, ?, ?, ?, ?, ?)''', (
+                    chat_id,
+                    admin_id,
+                    admin_username,
+                    admin_fullname,
+                    can_delete_msg,
+                    can_restrict_user
+                ))
+            await self.database.commit()
+
+    async def admin_remove(self, admin_id: int) -> None:
+        async with self.lock:
+            await self.db_cursor.execute('DELETE FROM admins WHERE admin_id = (?)', (admin_id,))
+            await self.database.commit()
+
+    async def key_phrase_add(self, chat_id: int, key_phrase: str) -> None:
         async with self.lock:
             await self.db_cursor.execute('''
                 CREATE TABLE IF NOT EXISTS key_phrases (
                     chat_id INTEGER,
-                    chat_fullname TEXT,
-                    kw_list TEXT
+                    key_phrase TEXT
                 )
             ''')
 
-            await self.db_cursor.execute('INSERT OR REPLACE INTO key_phrases (chat_id) VALUES (?)', (chat_id,))
+            safe_key_phrase = get_safe_text(key_phrase)
+            await self.db_cursor.execute('INSERT INTO key_phrases (chat_id, safe_key_phrases) VALUES (?, ?)', (
+                chat_id,
+                safe_key_phrase
+            ))
             await self.database.commit()
 
-    async def add_chat_fullname(self, chat_id: int, chat_fullname: str) -> None:
-        safe_chat_fullname = get_safe_chat_name(chat_fullname)
+    async def key_phrase_remove(self, chat_id: int, key_phrase: str) -> None:
         async with self.lock:
-            await self.db_cursor.execute(
-                'UPDATE key_phrases SET (chat_fullname) = (?) WHERE chat_id = (?)',
-                (safe_chat_fullname, chat_id)
+            await self.db_cursor.execute('DELETE FROM key_phrases WHERE chat_id = (?) AND key_phrase = (?)', (
+                chat_id,
+                key_phrase
+            ))
+            await self.database.commit()
+
+    async def key_phrases_get(self, chat_id: int) -> list[str]:
+        async with self.lock:
+            key_phrases_lines = await self.db_cursor.execute(
+                'SELECT key_phrase FROM key_phrases WHERE chat_id = (?)',
+                (chat_id,)
             )
+
+            return list(map(lambda tup: tup[0], await key_phrases_lines.fetchall()))
+
+    async def detected_message_add(
+            self,
+            chat_id: int,
+            chat_fullname: str,
+            message_id: int,
+            message_text: str,
+            message_link: str,
+            author_id: int,
+            author_username: str,
+            author_fullname: str
+    ) -> None:
+        async with self.lock:
+            await self.db_cursor.execute('''
+                CREATE TABLE IF NOT EXISTS detected_messages (
+                    chat_id: INTEGER,
+                    chat_fullname: TEXT,
+                    message_id: INTEGER,
+                    message_text: TEXT,
+                    message_link: TEXT,
+                    author_id: INTEGER,
+                    author_username: TEXT,
+                    author_fullname: TEXT
+                )
+            ''')
+
+            await self.db_cursor.execute('''
+                INSERT OR REPLACE INTO detected_messages (
+                    chat_id,
+                    chat_fullname,
+                    message_id, 
+                    message_text
+                    message_link,
+                    author_id,
+                    author_username,
+                    author_fullname
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)''', (
+                    chat_id,
+                    chat_fullname,
+                    message_id,
+                    message_text,
+                    message_link,
+                    author_id,
+                    author_username,
+                    author_fullname
+                ))
             await self.database.commit()
 
-    async def remove_chat(self, chat_id: int) -> None:
+    async def detected_message_remove(self, chat_id: int, message_id: int) -> None:
         async with self.lock:
-            await self.db_cursor.execute('DELETE FROM key_phrases WHERE chat_id = (?)', (chat_id,))
+            await self.db_cursor.execute('DELETE FROM detected_messages WHERE chat_id = (?) AND message_id = (?)', (
+                chat_id,
+                message_id
+            ))
             await self.database.commit()

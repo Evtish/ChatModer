@@ -1,8 +1,8 @@
-from common.informer import _MSG_NOT_FOUND
+from common.informer import EXECUTION_ERROR_TEXT
 
 
 def get_msg_not_found_info() -> str:
-    return _MSG_NOT_FOUND
+    return EXECUTION_ERROR_TEXT
 
 
 def get_ignore_msg_info() -> str:
