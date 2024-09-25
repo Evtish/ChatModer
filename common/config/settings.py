@@ -6,6 +6,8 @@ from aiogram.fsm.state import StatesGroup, State
 
 BOT_TOKEN = getenv('BOT_TOKEN')
 
+DB_NAME = 'main_database.db'
+
 MUTE_DURATION = timedelta(seconds=31)
 
 KEY_PHRASES = (
