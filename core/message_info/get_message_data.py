@@ -3,8 +3,8 @@ from typing import Callable
 
 from aiogram.utils import markdown
 
-from common.informer import EXECUTION_ERROR_TEXT
-from common import detected_message
+from core.message_info import EXECUTION_ERROR_TEXT
+from core import detected_message
 
 
 def use_safely(func: Callable) -> Callable:
@@ -33,3 +33,10 @@ def get_detected_message_url(text: str) -> str:
 @use_safely
 def get_detected_message_quote() -> str:
     return markdown.hitalic('Message text:\n') + markdown.hblockquote(detected_message.text)
+
+
+__all__ = (
+    'get_user_name',
+    'get_detected_message_url',
+    'get_detected_message_quote'
+)

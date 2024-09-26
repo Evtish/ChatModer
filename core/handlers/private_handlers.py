@@ -6,11 +6,11 @@ from aiogram import Router, F
 from aiogram.exceptions import TelegramBadRequest
 from aiogram.types import CallbackQuery, InputMediaPhoto, ChatPermissions
 
-import common
+import core
 from .. import create_inline_kb, text_or_caption
 from ..config.settings import MUTE_DURATION, Callback
 from ..config.media import SORRY_SHREK
-from ..informer.get_info_messages import *
+from ..message_info.get_info_messages import *
 
 router = Router(name=__name__)
 
@@ -63,7 +63,7 @@ def log_message_action(info: str, use_troubleshooting: bool = False) -> Callable
 @log_message_action(get_ignore_msg_info())
 async def ignore_message(callback: CallbackQuery) -> None:
     try:
-        await common.answering_message.edit_media(InputMediaPhoto(media=SORRY_SHREK))
+        await core.answering_message.edit_media(InputMediaPhoto(media=SORRY_SHREK))
     except TelegramBadRequest:
         pass
 
@@ -71,16 +71,16 @@ async def ignore_message(callback: CallbackQuery) -> None:
 @router.callback_query(F.data == Callback.DELETE_MESSAGE)
 @log_message_action(get_delete_msg_info())
 async def delete_message(callback: CallbackQuery) -> None:
-    await common.detected_message.delete()
-    await common.answering_message.delete()
+    await core.detected_message.delete()
+    await core.answering_message.delete()
 
 
 @router.callback_query(F.data == Callback.MUTE_USER)
 @log_message_action(get_mute_user_info(), use_troubleshooting=True)
 async def mute_user(callback: CallbackQuery) -> None:
-    await common.bot.restrict_chat_member(
-        common.detected_message.chat.id,
-        common.detected_message.from_user.id,
+    await core.bot.restrict_chat_member(
+        core.detected_message.chat.id,
+        core.detected_message.from_user.id,
         ChatPermissions(
             can_send_messages=False,
             can_send_photos=False,
@@ -100,8 +100,8 @@ async def mute_user(callback: CallbackQuery) -> None:
 @router.callback_query(F.data == Callback.BAN_USER)
 @log_message_action(get_ban_user_info(), use_troubleshooting=True)
 async def ban_user(callback: CallbackQuery) -> None:
-    await common.bot.ban_chat_member(
-        common.detected_message.chat.id,
-        common.detected_message.from_user.id,
+    await core.bot.ban_chat_member(
+        core.detected_message.chat.id,
+        core.detected_message.from_user.id,
         revoke_messages=True
     )

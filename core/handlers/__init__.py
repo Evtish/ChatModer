@@ -1,9 +1,9 @@
 from aiogram import Router
 
 from .basic_handlers import router as base_router
-from .admin_handlers import router as admin_router
+from .private_handlers import router as admin_router
 from .database_handlers import router as database_router
-from .keywords_handlers import router as keywords_router
+from core.handlers.database.key_phrase_handlers import router as keywords_router
 
 main_router = Router(name=__name__)
 main_router.include_routers(base_router, admin_router, database_router)

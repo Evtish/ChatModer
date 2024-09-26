@@ -1,13 +1,13 @@
-from aiogram import Router, F
+from aiogram import Router
 from aiogram.exceptions import TelegramBadRequest
 from aiogram.types import Message
 
-import common
-from .. import text_or_caption
-from ..config.settings import Callback, DB_NAME
-from ..config.media import HAMSTER_COMBAT, BAD_WORDS
-from ..informer.get_info_messages import get_info_for_admins
-from common.key_phrases_db import KeyPhrasesDB
+import core
+from core import text_or_caption
+from core.config.settings import Callback, DB_NAME
+from core.config.media import HAMSTER_COMBAT, BAD_WORDS
+from core.message_info.get_info_messages import get_info_for_admins
+from core.database_backend.key_phrases_db import KeyPhrasesDB
 
 import pymorphy3
 
@@ -34,6 +34,7 @@ def convert_to_normal_form(phrase: str) -> str:
 
 async def detect_kw(message: Message) -> Message:
     async with KeyPhrasesDB(DB_NAME) as db:
+        await db.key_phrase_init()
         key_phrases = await db.key_phrases_get(message.chat.id)
 
     text_or_caption.set_message(message)
@@ -45,13 +46,13 @@ async def detect_kw(message: Message) -> Message:
 
 async def info_admins(message: Message) -> None:
     try:
-        for cur_admin in await common.bot.get_chat_administrators(message.chat.id):
+        for cur_admin in await core.bot.get_chat_administrators(message.chat.id):
             if not cur_admin.user.is_bot:
-                await common.bot.send_photo(
+                await core.bot.send_photo(
                     cur_admin.user.id,
                     HAMSTER_COMBAT,
                     caption=get_info_for_admins(),
-                    reply_markup=common.create_inline_kb(kb_action_buttons)
+                    reply_markup=core.create_inline_kb(kb_action_buttons)
                 )
     except (AttributeError, TelegramBadRequest):
         pass
@@ -62,8 +63,8 @@ async def handle_kw(message: Message) -> None:
     # global detected_message, answering_photo_message
     cur_detected_message = await detect_kw(message)
     if cur_detected_message:
-        common.detected_message = cur_detected_message
-        common.answering_message = await common.detected_message.reply_photo(BAD_WORDS, disable_notification=True)
+        core.detected_message = cur_detected_message
+        core.answering_message = await core.detected_message.reply_photo(BAD_WORDS, disable_notification=True)
         await info_admins(message)
 
     '''

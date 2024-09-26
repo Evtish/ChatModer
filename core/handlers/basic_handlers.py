@@ -2,7 +2,7 @@ from aiogram import Router
 from aiogram.filters import CommandStart, Command
 from aiogram.types import Message
 
-from common.config.media import ADMIN_GIF
+from core.config.media import ADMIN_GIF
 
 router = Router(name=__name__)
 

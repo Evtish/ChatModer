@@ -53,4 +53,5 @@ class Callback(str, Enum):
 
 
 class KeyPhrasesStates(StatesGroup):
-    WAIT_FOR_KEY_PHRASES = State()
+    ADD_KEY_PHRASES = State()
+    REMOVE_KEY_PHRASES = State()

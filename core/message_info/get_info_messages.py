@@ -1,4 +1,7 @@
-from common.informer import EXECUTION_ERROR_TEXT
+# from aiogram.utils import markdown
+
+from core.message_info import EXECUTION_ERROR_TEXT
+# from .get_message_data import *
 
 
 def get_msg_not_found_info() -> str:
