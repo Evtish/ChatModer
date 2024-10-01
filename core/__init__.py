@@ -1,10 +1,11 @@
 from aiogram import Bot
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
+from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, InlineKeyboardMarkup
 from aiogram.utils import keyboard
 
-from core.config.settings import BOT_TOKEN
+from system.settings import BOT_TOKEN
 
 bot = Bot(token=BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 
@@ -19,11 +20,8 @@ def create_inline_kb(buttons: dict) -> keyboard.InlineKeyboardMarkup:
     return inline_kb_builder.adjust(1).as_markup()
 
 
-class TextOrCaption:
+class MessageManager:
     message: Message
-
-    def __init__(self):
-        pass
 
     def set_message(self, message: Message) -> None:
         self.message = message
@@ -41,4 +39,4 @@ class TextOrCaption:
             await self.message.edit_caption(caption=new_text, reply_markup=new_markup)
 
 
-text_or_caption = TextOrCaption()
+message_manager = MessageManager()

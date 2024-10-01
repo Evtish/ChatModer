@@ -1,4 +1,4 @@
-from core.config.settings import CORRECT_SYMBOLS
+from system.settings import CORRECT_SYMBOLS
 
 from pathlib import Path
 from typing import Self, Iterator

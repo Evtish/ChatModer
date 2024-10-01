@@ -7,10 +7,10 @@ from aiogram.exceptions import TelegramBadRequest
 from aiogram.types import CallbackQuery, InputMediaPhoto, ChatPermissions
 
 import core
-from .. import create_inline_kb, text_or_caption
-from ..config.settings import MUTE_DURATION, Callback
-from ..config.media import SORRY_SHREK
-from ..message_info.get_info_messages import *
+from .. import create_inline_kb, message_manager
+from system.settings import MUTE_DURATION, Callback
+from system.media import SORRY_SHREK
+from ..informer.get_info_messages import *
 
 router = Router(name=__name__)
 
@@ -24,8 +24,9 @@ async def user_restricting_troubleshoot(callback: CallbackQuery) -> None:
         'No': Callback.IGNORE_MESSAGE
     }
 
-    text_or_caption.set_message(callback.message)
-    await text_or_caption.edit_text_or_caption(info_text, new_markup=create_inline_kb(ask_buttons))
+    # message_manager.set_message(callback.message)
+    # await message_manager.edit_text_or_caption(info_text, new_markup=create_inline_kb(ask_buttons))
+    await callback.message.edit_text(info_text, reply_markup=create_inline_kb(ask_buttons))
     if router.callback_query(F.data == Callback.DELETE_MESSAGE):
         await delete_message(CallbackQuery())
     elif router.callback_query(F.data == Callback.IGNORE_MESSAGE):
@@ -38,8 +39,8 @@ def log_message_action(info: str, use_troubleshooting: bool = False) -> Callable
         async def wrapper(callback: CallbackQuery) -> None:
             async def answer_callback(text: str) -> None:
                 await callback.answer()
-                text_or_caption.set_message(callback.message)
-                await text_or_caption.edit_text_or_caption(text)
+                message_manager.set_message(callback.message)
+                await message_manager.edit_text_or_caption(text)
 
             try:
                 returned_func = await func(callback)
@@ -49,10 +50,10 @@ def log_message_action(info: str, use_troubleshooting: bool = False) -> Callable
             except TelegramBadRequest:
                 if use_troubleshooting:
                     return await user_restricting_troubleshoot(callback)
-                await answer_callback(get_msg_not_found_info())
+                await answer_callback(get_not_found_message())
 
             except AttributeError:
-                await answer_callback(get_msg_not_found_info())
+                await answer_callback(get_not_found_message())
 
         return wrapper
 
@@ -60,23 +61,24 @@ def log_message_action(info: str, use_troubleshooting: bool = False) -> Callable
 
 
 @router.callback_query(F.data == Callback.IGNORE_MESSAGE)
-@log_message_action(get_ignore_msg_info())
+@log_message_action(get_ignore_message())
 async def ignore_message(callback: CallbackQuery) -> None:
     try:
-        await core.answering_message.edit_media(InputMediaPhoto(media=SORRY_SHREK))
+        await core.answering_message.edit_text('Sorry, this message is OK')
+        # await core.answering_message.edit_media(InputMediaPhoto(media=SORRY_SHREK))
     except TelegramBadRequest:
         pass
 
 
 @router.callback_query(F.data == Callback.DELETE_MESSAGE)
-@log_message_action(get_delete_msg_info())
+@log_message_action(get_delete_message())
 async def delete_message(callback: CallbackQuery) -> None:
     await core.detected_message.delete()
     await core.answering_message.delete()
 
 
 @router.callback_query(F.data == Callback.MUTE_USER)
-@log_message_action(get_mute_user_info(), use_troubleshooting=True)
+@log_message_action(get_mute_message(), use_troubleshooting=True)
 async def mute_user(callback: CallbackQuery) -> None:
     await core.bot.restrict_chat_member(
         core.detected_message.chat.id,
@@ -98,7 +100,7 @@ async def mute_user(callback: CallbackQuery) -> None:
 
 
 @router.callback_query(F.data == Callback.BAN_USER)
-@log_message_action(get_ban_user_info(), use_troubleshooting=True)
+@log_message_action(get_ban_message(), use_troubleshooting=True)
 async def ban_user(callback: CallbackQuery) -> None:
     await core.bot.ban_chat_member(
         core.detected_message.chat.id,

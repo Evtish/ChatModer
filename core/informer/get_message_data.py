@@ -3,7 +3,7 @@ from typing import Callable
 
 from aiogram.utils import markdown
 
-from core.message_info import EXECUTION_ERROR_TEXT
+from core.informer import EXECUTION_ERROR_TEXT
 from core import detected_message
 
 

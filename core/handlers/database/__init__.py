@@ -1,18 +1,10 @@
-from functools import wraps
-from typing import Callable
+from aiogram import Router
 
-from aiogram.fsm.context import FSMContext
-from aiogram.types import Message
+from .chat_handlers import router as chat_router
+# from .detected_message_handlers import router as detected_message_router
+from .key_phrase_handlers import router as key_phrase_router
 
-from core import bot
+router = Router(name=__name__)
+router.include_routers(chat_router, key_phrase_router)
 
-
-def check_user_is_admin(func: Callable) -> Callable:
-    @wraps(func)
-    async def wrapper(message: Message, state: FSMContext) -> None:
-        if message.from_user in map(lambda member: member.user, await bot.get_chat_administrators(message.chat.id)):
-            func(message, state)
-        else:
-            await message.reply('This command is for admins only')
-
-    return wrapper
+__all__ = 'router'
