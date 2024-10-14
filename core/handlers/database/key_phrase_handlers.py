@@ -9,12 +9,12 @@ from aiogram.types import Message
 from aiogram.utils import markdown
 
 from system.settings import Callback, DB_NAME, KeyPhrasesStates
-from system.media import HAMSTER_COMBAT, BAD_WORDS
+# from system.media import HAMSTER_COMBAT, BAD_WORDS
 
 import core
 from core import bot, MessageManager
 from core.informer.get_info_messages import get_for_admins_message
-from core.database_backend.key_phrases_db import KeyPhrasesDB
+from database_backend.key_phrases_db import KeyPhrasesDB
 
 import pymorphy3
 

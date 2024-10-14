@@ -1,14 +1,9 @@
-from system.settings import CORRECT_SYMBOLS
-
+from database_backend import get_safe_text
 from pathlib import Path
 from typing import Self, Iterator
 
 import asyncio
 import aiosqlite
-
-
-def get_safe_text(name: str) -> str:
-    return ''.join(s for s in name if s in CORRECT_SYMBOLS)
 
 
 class KeyPhrasesDB:

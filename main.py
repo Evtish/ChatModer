@@ -14,7 +14,7 @@ dispatcher = Dispatcher()
 dispatcher.include_router(main_router)
 
 
-async def main() -> None:
+async def aiogram_main() -> None:
     logging.basicConfig(level=logging.DEBUG)
     # await FSMContext.set_state(KeyPhrasesStates.SEARCH_KEY_PHRASES)
     await dispatcher.start_polling(bot)
@@ -22,6 +22,6 @@ async def main() -> None:
 
 if __name__ == "__main__":
     try:
-        asyncio.run(main())
+        asyncio.run(aiogram_main())
     except KeyboardInterrupt:
         logging.log(level=logging.INFO, msg='Bot was stopped')

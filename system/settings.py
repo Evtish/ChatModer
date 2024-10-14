@@ -1,5 +1,5 @@
 import string
-from enum import Enum
+from enum import StrEnum
 from os import getenv
 from datetime import timedelta
 
@@ -43,7 +43,7 @@ CORRECT_SYMBOLS = string.printable + ''.join(map(lambda c: chr(c), range(ord('А
 # )
 
 
-class Callback(str, Enum):
+class Callback(StrEnum):
     IGNORE_MESSAGE: str = 'ignore_massage',
     DELETE_MESSAGE: str = 'delete_message',
     MUTE_USER: str = 'mute_user',

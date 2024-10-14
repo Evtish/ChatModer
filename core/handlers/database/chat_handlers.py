@@ -4,7 +4,7 @@ from aiogram.types import Message
 from core import bot
 from core.handlers.basic_handlers import handle_start
 from system.settings import DB_NAME
-from core.database_backend.key_phrases_db import KeyPhrasesDB
+from database_backend.key_phrases_db import KeyPhrasesDB
 
 router = Router(name=__name__)
 
