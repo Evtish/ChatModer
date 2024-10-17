@@ -124,7 +124,7 @@ async def handle_remove_key_phrases_request(message: Message, state: FSMContext)
     await message.reply('Please, send list of key phrases separated by new line')
 
 
-@router.message(KeyPhrasesStates.ADD_KEY_PHRASES)
+@router.message(KeyPhrasesStates.REMOVE_KEY_PHRASES)
 async def remove_key_phrases(message: Message, state: FSMContext) -> None:
     try:
         removed_key_phrases = message.text.split('\n')
